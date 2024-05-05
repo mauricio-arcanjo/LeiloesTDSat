@@ -27,12 +27,12 @@ public class ProdutosDAO {
         conn = new conectaDAO().connectDB();
 
         try {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?);");
+            prep = conn.prepareStatement("INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?);");
 
-            stmt.setString(1, produto.getNome());
-            stmt.setInt(2, produto.getValor());
-            stmt.setString(3, produto.getStatus());
-            stmt.executeUpdate();
+            prep.setString(1, produto.getNome());
+            prep.setInt(2, produto.getValor());
+            prep.setString(3, produto.getStatus());
+            prep.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 
@@ -45,7 +45,31 @@ public class ProdutosDAO {
 
     public ArrayList<ProdutosDTO> listarProdutos() {
 
-        return listagem;
-    }
+        conn = new conectaDAO().connectDB();
+        
+        String sql = "SELECT * FROM produtos";
 
+        try {
+            prep = this.conn.prepareStatement(sql);
+
+            resultset = prep.executeQuery();
+
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+
+                listagem.add(produto);
+            }
+
+            return listagem;
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar lista de filmes: " + e.getMessage());
+            return null;
+        }
+
+    }
 }
