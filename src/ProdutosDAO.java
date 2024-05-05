@@ -37,7 +37,7 @@ public class ProdutosDAO {
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar cadastrar!");
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar cadastrar o produto!");
             System.out.println(ex);
         }
 
