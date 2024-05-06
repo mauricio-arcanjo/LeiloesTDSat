@@ -97,15 +97,13 @@ public class ProdutosDAO {
 
         conn = new conectaDAO().connectDB();
 
-        String sql = "SELECT * FROM produtos WHERE status = '?'";
+        String sql = "select * from produtos where status = 'vendido';";
 
         try {
            prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            
-            prep.setString(1, "Vendido");
-            
-            prep.execute();
+                        
+            resultset = prep.executeQuery();
 
             while (resultset.next()) {
                 ProdutosDTO produto = new ProdutosDTO();
