@@ -46,7 +46,7 @@ public class ProdutosDAO {
     public ArrayList<ProdutosDTO> listarProdutos() {
 
         conn = new conectaDAO().connectDB();
-        
+
         String sql = "SELECT * FROM produtos";
 
         try {
@@ -71,5 +71,26 @@ public class ProdutosDAO {
             return null;
         }
 
+    }
+
+    public void venderProduto(int id) {
+
+        conn = new conectaDAO().connectDB();
+
+        String sql = "UPDATE produtos SET status = ? WHERE id = ?;";
+
+        try {
+            prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            
+            prep.setString(1, "Vendido");
+            prep.setInt(2, id);
+           
+            prep.execute();
+        
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar status" + e.getMessage());
+        }
+        
     }
 }
