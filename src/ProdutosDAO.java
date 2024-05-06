@@ -67,7 +67,7 @@ public class ProdutosDAO {
 
             return listagem;
         } catch (Exception e) {
-            System.out.println("Erro ao buscar lista de filmes: " + e.getMessage());
+            System.out.println("Erro ao buscar lista de produtos: " + e.getMessage());
             return null;
         }
 
@@ -80,8 +80,7 @@ public class ProdutosDAO {
         String sql = "UPDATE produtos SET status = ? WHERE id = ?;";
 
         try {
-            prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            prep = conn.prepareStatement(sql);
             
             prep.setString(1, "Vendido");
             prep.setInt(2, id);
@@ -92,5 +91,38 @@ public class ProdutosDAO {
             System.out.println("Erro ao atualizar status" + e.getMessage());
         }
         
+    }
+    
+        public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+
+        conn = new conectaDAO().connectDB();
+
+        String sql = "SELECT * FROM produtos WHERE status = '?'";
+
+        try {
+           prep = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            
+            prep.setString(1, "Vendido");
+            
+            prep.execute();
+
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+
+                listagem.add(produto);
+            }
+
+            return listagem;
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar lista de produtos: " + e.getMessage());
+            return null;
+        }
+
     }
 }
